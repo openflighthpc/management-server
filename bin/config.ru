@@ -30,8 +30,8 @@ require 'rubygems'
 require 'bundler/setup'
 
 Bundler.setup(:default)
-$LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
+$LOAD_PATH.unshift(File.expand_path('..', __dir__))
 
-require 'app'
-run App
+require 'app/routes'
+run App::Routes
 

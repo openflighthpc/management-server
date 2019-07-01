@@ -28,9 +28,11 @@
 
 require 'sinatra/base'
 
-class App < Sinatra::Application
-  get '/' do
-    'openFlightHPC - Next generation HPC on any platform'
+module App
+  class Routes < Sinatra::Application
+    get '/' do
+      'openFlightHPC - Next generation HPC on any platform'
+    end
   end
 end
 
