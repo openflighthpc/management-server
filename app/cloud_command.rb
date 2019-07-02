@@ -29,19 +29,20 @@
 require 'open3'
 
 module App
-  class CloudCommand
+  CloudCommand = Struct.new(:stdout, :stderr, :status) do
     BASE = 'flight cloud aws'
 
     ['status', 'on', 'off'].each do |type|
       define_singleton_method("power_#{type}") do |node|
-        capture3("#{BASE} power #{type} #{node}")
+        capture3("power #{type} #{node}")
       end
     end
 
     private_class_method
 
-    def self.capture3(*a)
-      Bundler.with_clean_env { Open3.capture3(*a) }
+    def self.capture3(raw_cmd, *a)
+      cmd = "#{BASE} #{raw_cmd}"
+      Bundler.with_clean_env { new(*Open3.capture3(cmd, *a)) }
     end
   end
 end

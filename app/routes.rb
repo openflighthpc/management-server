@@ -41,15 +41,15 @@ module App
     namespace '/cloud' do
       namespace '/power/:node' do
         get '' do
-          CloudCommand.power_status(node_param).to_s
+          CloudCommand.power_status(node_param).stdout
         end
 
         get '/on' do
-          CloudCommand.power_on(node_param).to_s
+          CloudCommand.power_on(node_param).stdout
         end
 
         get '/off' do
-          CloudCommand.power_on(node_param).to_s
+          CloudCommand.power_off(node_param).stdout
         end
       end
     end
