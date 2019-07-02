@@ -26,6 +26,7 @@
 # https://github.com/openflighthpc/management-server
 #===============================================================================
 
+require 'active_support/core_ext/module/delegation'
 require 'open3'
 
 module App
@@ -42,7 +43,24 @@ module App
 
     def self.capture3(raw_cmd, *a)
       cmd = "#{BASE} #{raw_cmd}"
-      Bundler.with_clean_env { new(*Open3.capture3(cmd, *a)) }
+      Bundler.with_clean_env do
+        stdout, stderr, status = Open3.capture3(cmd, *a)
+        new(
+          stdout.chomp,
+          stderr.chomp.sub(/\Aerror: /, ''),
+          status
+        )
+      end
+    end
+
+    delegate :success?, to: :status
+
+    def response
+      {
+        success: success?,
+      }.tap do |h|
+        success? ? h[:message] = stdout : h[:error] = stderr
+      end
     end
   end
 end

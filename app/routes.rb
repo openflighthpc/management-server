@@ -28,10 +28,12 @@
 
 require 'sinatra/base'
 require 'sinatra/namespace'
+require 'sinatra/json'
 require 'app/cloud_command'
 
 module App
   class Routes < Sinatra::Base
+    register Sinatra::JSON
     register Sinatra::Namespace
 
     get '/' do
@@ -41,15 +43,15 @@ module App
     namespace '/cloud' do
       namespace '/power/:node' do
         get '' do
-          CloudCommand.power_status(node_param).stdout
+          json CloudCommand.power_status(node_param).response
         end
 
         get '/on' do
-          CloudCommand.power_on(node_param).stdout
+          json CloudCommand.power_on(node_param).response
         end
 
         get '/off' do
-          CloudCommand.power_off(node_param).stdout
+          json CloudCommand.power_off(node_param).response
         end
       end
     end
