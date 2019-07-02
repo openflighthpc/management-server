@@ -27,5 +27,5 @@
 #===============================================================================
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-bundle exec rackup $DIR/config.ru -p 80 -o 0.0.0.0
+bundle exec rackup $DIR/config.ru -p 80 -o 0.0.0.0 $@
 

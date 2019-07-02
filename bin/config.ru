@@ -32,7 +32,7 @@ require 'bundler/setup'
 Bundler.setup(:default)
 $LOAD_PATH.unshift(File.expand_path('..', __dir__))
 
-require 'pry' if ENV['MANAGEMENT_SERVER_DEBUG']
+require 'pry' if $DEBUG
 
 require 'app/routes'
 run App::Routes
