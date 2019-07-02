@@ -26,39 +26,22 @@
 # https://github.com/openflighthpc/management-server
 #===============================================================================
 
-require 'sinatra/base'
-require 'sinatra/namespace'
-require 'app/cloud_command'
+require 'open3'
 
 module App
-  class Routes < Sinatra::Base
-    register Sinatra::Namespace
+  class CloudCommand
+    BASE = 'flight cloud aws'
 
-    get '/' do
-      'openFlightHPC - Next generation HPC on any platform'
-    end
-
-    namespace '/cloud' do
-      namespace '/power/:node' do
-        get '' do
-          CloudCommand.power_status(node_param).to_s
-        end
-
-        get '/on' do
-          CloudCommand.power_on(node_param).to_s
-        end
-
-        get '/off' do
-          CloudCommand.power_on(node_param).to_s
-        end
+    ['status', 'on', 'off'].each do |type|
+      define_singleton_method("power_#{type}") do |node|
+        capture3("#{BASE} power #{type} #{node}")
       end
     end
 
-    private
+    private_class_method
 
-    def node_param
-      params[:node]
+    def self.capture3(*a)
+      Bundler.with_clean_env { Open3.capture3(*a) }
     end
   end
 end
-
