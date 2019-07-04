@@ -29,12 +29,14 @@
 require 'sinatra/base'
 require 'sinatra/namespace'
 require 'sinatra/json'
+require 'sinatra/param'
 require 'app/cloud_command'
 
 module App
   class Routes < Sinatra::Base
     register Sinatra::JSON
     register Sinatra::Namespace
+    helpers  Sinatra::Param
 
     get '/' do
       'openFlightHPC - Next generation HPC on any platform'
@@ -64,7 +66,7 @@ module App
     end
 
     def group_param
-      params[:group]
+      param :group, Boolean
     end
   end
 end
