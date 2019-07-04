@@ -40,19 +40,20 @@ module App
       'openFlightHPC - Next generation HPC on any platform'
     end
 
-    namespace '/cloud' do
-      namespace '/power/:node' do
-        get '' do
-          json CloudCommand.power_status(node_param).response
-        end
+    namespace '/power/:node' do
+      get '' do
+        json CloudCommand.power_status(node_param, group: group_param)
+                         .response
+      end
 
-        get '/on' do
-          json CloudCommand.power_on(node_param).response
-        end
+      get '/on' do
+        json CloudCommand.power_on(node_param, group: group_param)
+                         .response
+      end
 
-        get '/off' do
-          json CloudCommand.power_off(node_param).response
-        end
+      get '/off' do
+        json CloudCommand.power_off(node_param, group: group_param)
+                         .response
       end
     end
 
@@ -60,6 +61,10 @@ module App
 
     def node_param
       params[:node]
+    end
+
+    def group_param
+      params[:group]
     end
   end
 end

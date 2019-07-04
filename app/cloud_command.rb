@@ -34,8 +34,8 @@ module App
     BASE = 'flight cloud aws'
 
     ['status', 'on', 'off'].each do |type|
-      define_singleton_method("power_#{type}") do |node|
-        capture3("power #{type} #{node}")
+      define_singleton_method("power_#{type}") do |node, group: false|
+        capture3("power #{type} #{node} #{'--group' if group}")
       end
     end
 
